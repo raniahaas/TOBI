@@ -11,3 +11,10 @@ The largest trial and tribulation I noted here (other than simply learning how t
 Additionally, viewed similarly to the stack and heap, not exactly necessary currently, but for more advanced development further down the line, this will become handy.
 <img width="1768" height="714" alt="Serial Monitor outputs of the stack and heap available" src="https://github.com/user-attachments/assets/c28e96cc-e168-488e-b1da-b318a053aff1" />
 
+# PCB Practice and Development in KiCAD
+This section initially follows the tutorials from [HTM Workshop](https://www.youtube.com/playlist?list=PLUOaI24LpvQPls1Ru_qECJrENwzD7XImd) on schematics, custom parts, and PCB design in KiCAD. Initally, this was not a critical piece for the development of TOBI, but as an overall for my advancement of knowledge of integration with hardware and understanding the day to day activites of an embedded systems engineer, under my mentorship this deemed to be a critical step in my knowledge.
+### Practicing Schematics
+The goal here was to re-create a schematic of a SPO2 Module into KiCAD. This just helped me get a better lay of the land when it came to working with KiCAD, running the electical rule checker, ensuring there are no connect flags properly placed, and the general wiring. 
+<img width="1505" height="940" alt="Final SPO2 Module" src="https://github.com/user-attachments/assets/c1d5aac8-71c9-48db-8771-28a1235185e3" />
+Additionally, I also learned how to make custom symbols to be added into schematics. Definitley one of the more useful tidbits to know when working with some lesser known avionics parts. 
+<img width="1503" height="896" alt="Custom MAZ30102 Module for KiCAD" src="https://github.com/user-attachments/assets/da84342c-d646-467f-8d63-9f66f037a9d9" />
