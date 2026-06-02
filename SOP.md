@@ -18,3 +18,10 @@ The goal here was to re-create a schematic of a SPO2 Module into KiCAD. This jus
 <img width="1505" height="940" alt="Final SPO2 Module" src="https://github.com/user-attachments/assets/c1d5aac8-71c9-48db-8771-28a1235185e3" />
 Additionally, I also learned how to make custom symbols to be added into schematics. Definitley one of the more useful tidbits to know when working with some lesser known avionics parts. 
 <img width="1503" height="896" alt="Custom MAZ30102 Module for KiCAD" src="https://github.com/user-attachments/assets/da84342c-d646-467f-8d63-9f66f037a9d9" />
+Learned a lot here that also consistency is key, often when running checks I'd run into issues with wiring when setting up the final PCB design, ensuring everything is consistent saves a lot of hairs. Truly covered a lot of bases here: final PCB design (without finishing touches just drafting), vias, setting up PCB templates based on printing (from the templates [here](https://github.com/sethhillbrand/kicad_templates)), custom schematics for each part as well. 
+<img width="1301" height="729" alt="Screenshot 2026-06-01 at 14 56 35" src="https://github.com/user-attachments/assets/bd3f4c01-4354-416d-be1d-7445e7e9880e" />
+<img width="1508" height="947" alt="Screenshot 2026-06-01 at 14 56 44" src="https://github.com/user-attachments/assets/9d4567a6-5fa4-4fb2-b280-a1d8145fb923" />
+<img width="1494" height="942" alt="Screenshot 2026-06-01 at 21 42 11" src="https://github.com/user-attachments/assets/b0cb7bfc-a106-4e4b-ad72-0fb67342ef0c" />
+<img width="1512" height="982" alt="Screenshot 2026-06-01 at 21 42 16" src="https://github.com/user-attachments/assets/860c5805-8ba5-4814-afca-ea9dae34932b" />
+<img width="1920" height="1080" alt="Screenshot 2026-06-01 at 21 42 16 (2)" src="https://github.com/user-attachments/assets/05052c30-d802-46c8-aa1e-70c70b0b0ccd" />
+
