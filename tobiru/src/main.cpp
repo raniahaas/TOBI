@@ -16,8 +16,13 @@
 
 
 //Tasks
-TaskHandle_t Task1;
-TaskHandle_t Task2;
+TaskHandle_t TaskStart;
+TaskHandle_t TaskFileLogging;
+TaskHandle_t TaskEventLogging;
+TaskHandle_t TaskUserTests;
+TaskHandle_t TaskShutdown;
+TaskHandle_t TaskIMU;
+TaskHandle_t TaskBaro;
 
 const int led1 = 3;
 const int led2 = 5; //possibly may need to change
@@ -75,7 +80,7 @@ void setup() {
     10000,     //stack size, will want to change later into development 
     NULL,      
     1,      //additionally may want to consider changing priorites   
-    &startUp,     
+    &TaskStart,     
     0);                   
 
   xTaskCreatePinnedToCore(
@@ -84,7 +89,7 @@ void setup() {
     10000,     
     NULL,      
     1,          
-    &writeEvents,   
+    &TaskEventLogging,   
     1);        
 
   xTaskCreatePinnedToCore(
@@ -93,7 +98,7 @@ void setup() {
     10000,     
     NULL,      
     1,          
-    &TasfileLoggingk2,   
+    &TaskFileLogging,   
     1);        
 
   xTaskCreatePinnedToCore(
@@ -102,7 +107,7 @@ void setup() {
     10000,     
     NULL,      
     1,          
-    &userTests,   
+    &TaskUserTests,   
     1);        
 
   xTaskCreatePinnedToCore(
@@ -111,7 +116,7 @@ void setup() {
     10000,     
     NULL,      
     1,          
-    &shutDown,   
+    &TaskIMU,   
     1);        
 
   //Core 1 Tasks
@@ -121,7 +126,7 @@ void setup() {
     10000,     
     NULL,      
     1,          
-    &imuWrite,   
+    &TaskIMU,   
     1);        
 
     xTaskCreatePinnedToCore(
@@ -130,7 +135,7 @@ void setup() {
     10000,     
     NULL,      
     1,          
-    &readBarometer,   
+    &TaskBaro,   
     1);        
 }
 
