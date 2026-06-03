@@ -1,5 +1,6 @@
 /**
 05/22/2026 - RH - Basework for multithreading integration
+06/02/2026 - RH - Fixes to the RTOS declarations 
 */
 
 #include <Arduino.h>
@@ -27,8 +28,16 @@ TaskHandle_t TaskBaro;
 const int led1 = 3;
 const int led2 = 5; //possibly may need to change
 
+
 //Code section for tasks
 void startUp(void *pvParameters){
+  /*Things to check on startup:
+    Continuity in batteries
+    IMU check
+    Accelerometer Check
+    Barometer Check
+
+  */
 
 }
 
