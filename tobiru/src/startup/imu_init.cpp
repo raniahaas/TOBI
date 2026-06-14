@@ -7,7 +7,7 @@
 #include "imu_init.h"
 #include <Arduino.h>
 
-Adafruit_LSM5DSO32 dso32;
+Adafruit_LSM6DSO32 dso32;
 
 //Ensure serial.begin is already called before this function
 bool initIMU() {
@@ -107,11 +107,89 @@ bool initIMU() {
         case LSM6DS_GYRO_RANGE_2000_DPS:
             Serial.println("2,000 degrees per second.");
             break;
-        case ISM330DHCX_GYRO_RANGE_4000+DPS:
+        case ISM330DHCX_GYRO_RANGE_4000_DPS:
             Serial.println("Unsupported range for the DSO32--Please modify your selection.");
             break;
     }
 
-    
-
+    //Note the LSM6DS instructions are from the LSM6DOSX Adafruit document, confirm with testing this is valid
+    Serial.print("Gyro rate is currently set to: ");
+    dso32.setGyroDataRate(LSM6DS_RATE_12_5_HZ);
+    switch (dso32.getGyroDataRate()){
+        case LSM6DS_RATE_SHUTDOWN:
+            Serial.println("0 Hz");
+            break;
+        case LSM6DS_RATE_12_5_HZ:
+            Serial.println("12.5 Hz");
+        case LSM6DS_RATE_26_HZ:
+            Serial.println("26 Hz");
+        case LSM6DS_RATE_52_HZ:
+            Serial.println("52 Hz");
+        case LSM6DS_RATE_104_HZ:
+            Serial.println("104 Hz");
+        case LSM6DS_RATE_208_HZ:
+            Serial.println("208 Hz");
+        case LSM6DS_RATE_416_HZ:
+            Serial.println("416 Hz");
+        case LSM6DS_RATE_833_HZ:
+            Serial.println("833 Hz");
+        case LSM6DS_RATE_1_66K_HZ:
+            Serial.println("1.66 KHz");
+        case LSM6DS_RATE_3_33K_HZ:
+            Serial.println("3.33 KHz");
+        case LSM6DS_RATE_6_66K_HZ:
+            Serial.println("6.66 KHz");
+            break;
+    }
+    return 0;
 }
+
+// void IMUPrints() {
+//     //Normalising senor event(s)
+//     sensors_event_t accel;
+//     sensors_event_t gyro;
+//     sensors_event_t temp;
+//     dso32.getEvent(&accel, &gyro, &temp);
+
+//     Serial.print("\t\tTemperature ");
+//     Serial.print(temp.temperature);
+//     Serial.println(" deg C");
+
+//     //Acceleration is in m/s^2
+//     Serial.print("\t\tAccel X: ");
+//     Serial.print(accel.acceleration.x);
+//     Serial.print(" \tY: ");
+//     Serial.print(accel.acceleration.y);
+//     Serial.print(" \tZ: ");
+//     Serial.print(accel.acceleration.z);
+//     Serial.println(" m/s^2");
+
+//     //Gyro data in radians/s
+//     Serial.print("\t\tGyro X: ");
+//     Serial.print(gyro.gyro.x);
+//     Serial.print(" \tY: ");
+//     Serial.print(gyro.gyro.y);
+//     Serial.print(" \tZ: ");
+//     Serial.print(gyro.gyro.z);
+//     Serial.println(" radians/s");
+
+//     delay(100);
+
+//     //Test section for plotting data
+
+//     // Serial.print(temp.temperature);
+//     // Serial.print(",");
+
+//     // Serial.print(accel.acceleration.x);
+//     // Serial.print(","); Serial.print(accel.acceleration.y);
+//     // Serial.print(","); Serial.print(accel.acceleration.z);
+//     // Serial.print(",");
+
+//     // Serial.print(gyro.gyro.x);
+//     // Serial.print(","); Serial.print(gyro.gyro.y);
+//     // Serial.print(","); Serial.print(gyro.gyro.z);
+//     // Serial.println();
+
+//     // delayMicroseconds(10000);
+
+// }

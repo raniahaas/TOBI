@@ -6,6 +6,7 @@
 #include <Arduino.h>
 #include <Adafruit_LSM6DSO32.h>
 #include <MS5611.h>
+#include "startup/imu_init.h"
 // Note that the GPIO number is offset by one so D2 is actually GPIO3 instead of GPIO2
 
 // #define LED1_PIN 3 // 2 + 1
@@ -38,6 +39,16 @@ void startUp(void *pvParameters){
     Barometer Check
 
   */
+  Serial.println("Starting device. Commencing Start up sequence.");
+  
+  if (!initIMU()){
+    Serial.println("IMU Startup Failed. Retry device.");
+    vTaskDelete(NULL);
+  } else {
+    Serial.println("IMU in check, all systems running. Continuing boot process...");
+    vTaskDelete(NULL);
+  }
+
 
 }
 
