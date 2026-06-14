@@ -1,22 +1,21 @@
 # Beginnings: Multithreading and Sensors
 Introductory code and LED development was done by following this article [here](https://randomnerdtutorials.com/esp32-freertos-arduino-tasks/).
 
-Note the ESP32 being used in the article is slightly different from the one I am using. I am currently running off of the ESP32-S3 by Seeed. 
-![image.png](attachment:6d2e6f51-7616-4254-a6b7-1b70d1c84374:image.png)
+Note that the ESP32 being used in the article is slightly different from the one I am using. I am currently running off of the ESP32-S3 by Seeed. 
 
-This is the intial wiring I used following the article. The overarching idea is to specifically assign a core (1 in this case) to blink the LED every second. 
+This is the initial wiring I used following the article. The overarching idea is to specifically assign a core (1 in this case) to blink the LED every second. 
 <img width="3024" height="4032" alt="Working with one LED on a single core" src="https://github.com/user-attachments/assets/57b8b31b-7069-4b54-8803-c2e99e4be2d3" />
-The largest trial and tribulation I noted here (other than simply learning how to work with a very basic hardware system), is the GPIO number for the Seeed is different than the regular Arduino GPIO number. The indexing starts at 1, not 0, which did cause some hairs to be pulled. I then moved to actually working with two cores by using two separate LEDs, one blinking every second on core 1 and another blinking every half second on core 0. 
+The largest trial and tribulation I noted here (other than simply learning how to work with a very basic hardware system), is that the GPIO number for the Seeed is different from the regular Arduino GPIO number. The indexing starts at 1, not 0, which did cause some hairs to be pulled. I then moved to actually working with two cores by using two separate LEDs, one blinking every second on core 1 and another blinking every half second on core 0. 
 <img width="1596" height="618" alt="Serial Monitor logging results of multithreading two LEDs." src="https://github.com/user-attachments/assets/4b9de912-1e2c-4bfe-a112-a40ffc5b9584" />
 Additionally, viewed similarly to the stack and heap, not exactly necessary currently, but for more advanced development further down the line, this will become handy.
 <img width="1768" height="714" alt="Serial Monitor outputs of the stack and heap available" src="https://github.com/user-attachments/assets/c28e96cc-e168-488e-b1da-b318a053aff1" />
 
 # PCB Practice and Development in KiCAD
-This section initially follows the tutorials from [HTM Workshop](https://www.youtube.com/playlist?list=PLUOaI24LpvQPls1Ru_qECJrENwzD7XImd) on schematics, custom parts, and PCB design in KiCAD. Initally, this was not a critical piece for the development of TOBI, but as an overall for my advancement of knowledge of integration with hardware and understanding the day to day activites of an embedded systems engineer, under my mentorship this deemed to be a critical step in my knowledge.
-### Practicing Schematics
-The goal here was to re-create a schematic of a SPO2 Module into KiCAD. This just helped me get a better lay of the land when it came to working with KiCAD, running the electical rule checker, ensuring there are no connect flags properly placed, and the general wiring. 
+This section initially follows the tutorials from [HTM Workshop](https://www.youtube.com/playlist?list=PLUOaI24LpvQPls1Ru_qECJrENwzD7XImd) on schematics, custom parts, and PCB design in KiCAD. Initally, this was not a critical piece for the development of TOBI, but as an overall for my advancement of knowledge of integration with hardware and understanding the day-to-day activities of an embedded systems engineer, under my mentorship, this was deemed to be a critical step in my knowledge.
+### Practising Schematics
+The goal here was to re-create a schematic of an SPO2 module in KiCAD. This just helped me get a better lay of the land when it came to working with KiCAD, running the electrical rule checker, ensuring there are no connect flags properly placed, and the general wiring. 
 <img width="1505" height="940" alt="Final SPO2 Module" src="https://github.com/user-attachments/assets/c1d5aac8-71c9-48db-8771-28a1235185e3" />
-Additionally, I also learned how to make custom symbols to be added into schematics. Definitley one of the more useful tidbits to know when working with some lesser known avionics parts. 
+Additionally, I also learned how to make custom symbols to be added into schematics. Definitely one of the more useful tidbits to know when working with some lesser-known avionics parts. 
 <img width="1503" height="896" alt="Custom MAZ30102 Module for KiCAD" src="https://github.com/user-attachments/assets/da84342c-d646-467f-8d63-9f66f037a9d9" />
 Learned a lot here that also consistency is key, often when running checks I'd run into issues with wiring when setting up the final PCB design, ensuring everything is consistent saves a lot of hairs. Truly covered a lot of bases here: final PCB design (without finishing touches just drafting), vias, setting up PCB templates based on printing (from the templates [here](https://github.com/sethhillbrand/kicad_templates)), custom schematics for each part as well. 
 <img width="1301" height="729" alt="Screenshot 2026-06-01 at 14 56 35" src="https://github.com/user-attachments/assets/bd3f4c01-4354-416d-be1d-7445e7e9880e" />
@@ -24,4 +23,18 @@ Learned a lot here that also consistency is key, often when running checks I'd r
 <img width="1494" height="942" alt="Screenshot 2026-06-01 at 21 42 11" src="https://github.com/user-attachments/assets/b0cb7bfc-a106-4e4b-ad72-0fb67342ef0c" />
 <img width="1512" height="982" alt="Screenshot 2026-06-01 at 21 42 16" src="https://github.com/user-attachments/assets/860c5805-8ba5-4814-afca-ea9dae34932b" />
 <img width="1920" height="1080" alt="Screenshot 2026-06-01 at 21 42 16 (2)" src="https://github.com/user-attachments/assets/05052c30-d802-46c8-aa1e-70c70b0b0ccd" />
+
+## Design and Final Schematics
+[TOBI_schematics.pdf](https://github.com/user-attachments/files/28931927/TOBI_schematics.pdf)
+When it actually came to the final schematics for TOBI, it was a smooth process. The majority of the components I was easily able to use and find from previous projects' elements. However, I did run into issues with sourcing the ESP32 from Seeed and the Adafruit DSO32, which both ended up being schematics that I revised from similar components online. 
+<img width="830" height="414" alt="Edited Adafruit DSO32 Symbol from online sources." src="https://github.com/user-attachments/assets/6426fed6-6b7b-4ec3-8b9d-efa56275f5c5" />
+Another issue I was constantly running into as well with these custom symbols and footprints is often when I retrieved the KiCAD files from GitHub, if I switched to another branch on the same repository (also know as this one), it would often cause issues with sourcing and retrieving those footprints. 
+<img width="1493" height="855" alt="Custom Footprints in KiCAD, 'Library' displayed on left-hand side, but was often not displayed in the schematics or symbol editor." src="https://github.com/user-attachments/assets/6b2bd1f7-ad8d-463c-a54b-11b6609acfd9" />
+
+
+# Intermediary: Soldering & Boards
+For testing, I ended up soldering pins onto the Adafruit DSO32, this was not only great practice for later when it comes to the actual PCB board, but in general. I had messed up the pins a couple of times since I was originally using unleaded solder instead of leaded and not being overly proficient with soldering caused some issues. Some were not entirely connected, contained enough solder, or I had accidentally soldered multiple pins together. Luckily, it was a pretty easy fix and swap to do this properly. 
+<img width="3024" height="4032" alt="Unleaded solder of the DSO32" src="https://github.com/user-attachments/assets/9b710951-3d52-412b-8c9a-18cd624be5a1" />
+I had a small setup at my desk that I had used to solder, using a space heater with a fan option, my actual soldering iron, and a breadboard to help hold the device in place. Not pictured is my phone as well, on a phone stand, which I used the flashlight for to help focus the light better and give me a cleaner view with the microscope. The flashlight helped tremendously once I had started using it and made the process go by a lot quicker with higher accuracy. 
+<img width="3024" height="4032" alt="IMG_4043" src="https://github.com/user-attachments/assets/6a92a385-e62b-4c4a-9ff7-87f24d2f4b98" />
 
