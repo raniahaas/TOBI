@@ -3,6 +3,7 @@
 06/02/2026 - RH - Fixes to the RTOS declarations 
 06/14/2026 - RH - Added Startup sequence for IMU
 06/14/2026 - RH - Battery Voltage display for serial log
+06/16/2026 - RH - Testing for IMU; without battery testing which will need to be done independently 
 */
 
 #include <Arduino.h>
@@ -51,69 +52,82 @@ void startUp(void *pvParameters){
   Serial.println("Starting device. Commencing Start up sequence.");
 
   //Battery Checks
-  Serial.print("Reading Battery Voltage.");
+  // Serial.print("Reading Battery Voltage.");
 
   // Configure: ADC pin, R1, R2, Vref, ADC resolution
-  battery.configure(14, 330000, 100000, 3.3, 4096); //May have to change these numbers to fit the ESP
-                  // GPIO5, 330kΩ, 100kΩ, 3.3V, 12-bit
-                  // 5, 330000, 100000, 3.3, 4096
-                  // pin14, ?, 1000000, 3.3, ?)
-  battery.begin();
+  // battery.configure(14, 330000, 100000, 3.3, 4096); //May have to change these numbers to fit the ESP
+  //                 // GPIO5, 330kΩ, 100kΩ, 3.3V, 12-bit
+  //                 // 5, 330000, 100000, 3.3, 4096
+  //                 // pin14, ?, 1000000, 3.3, ?)
+  // battery.begin();
 
-  float voltage = battery.readVoltage();
-  Serial.print("Battery Voltage is currently: ");
-  Serial.println(voltage);
+  // float voltage = battery.readVoltage();
+  // Serial.print("Battery Voltage is currently: ");
+  // Serial.println(voltage);
 
-  if (voltage < 3.4) {
-      Serial.println("CRITICAL: Battery too low for safe operation!");
-      vTaskDelete(NULL);
-  }
+  // if (voltage < 3.4) {
+  //     Serial.println("CRITICAL: Battery too low for safe operation!");
+  //     vTaskDelete(NULL);
+  // }
 
-  if (voltage < 3.6) {
-      Serial.println("WARNING: Battery low! Re-charge battery soon. Startup continuing...");
-  }
+  // if (voltage < 3.6) {
+  //     Serial.println("WARNING: Battery low! Re-charge battery soon. Startup continuing...");
+  // }
 
-  Serial.println("Battery voltage OK. Continuing bootprocess...");
+  // Serial.println("Battery voltage OK. Continuing bootprocess...");
   
   //IMU initilisation 
-  if (!initIMU()){
-    Serial.println("IMU Startup Failed. Retry device.");
-    vTaskDelete(NULL);
-  } else {
-    Serial.println("IMU in check, all systems running. Continuing boot process...");
-    vTaskDelete(NULL);
+  //initIMU();
+
+  Serial.println("IMU in check, all systems running. Continuing boot process...");
+  vTaskDelete(NULL);
+  for(;;) {
+    vTaskDelay(pdMS_TO_TICKS(1000));
   }
+  
 
 
 }
 
-void imuWrite(void *pvParameters)  {
+//Begin placeholder loops
 
+void imuWrite(void *pvParameters)  {
+  
 }
 
 void readBarometer(void *pvParameters){
-
+  
 }
 
 void writeEvents(void *pvParameters){
-
+  
 }
 
 void fileLogging(void *pvParameters){
-
+  
 }
 
 void shutDown(void *pvParameters){
-
+  
 }
 
 void userTests(void *pvParameters){
-
+  
 }
 
 void setup() {
   Serial.begin(115200); //default baud rate
   delay(500);
+
+  Wire.begin(5,6);
+
+  //IMU Testing
+  Serial.println("Direct IMU init test...");
+  initIMU();
+  Serial.println("IMU init finished.");
+ 
+  
+  
 
   /*
   Core 0:
@@ -145,7 +159,7 @@ void setup() {
     NULL,      
     1,          
     &TaskEventLogging,   
-    1);        
+    0);        
 
   xTaskCreatePinnedToCore(
     fileLogging,   
@@ -154,7 +168,7 @@ void setup() {
     NULL,      
     1,          
     &TaskFileLogging,   
-    1);        
+    0);        
 
   xTaskCreatePinnedToCore(
     userTests,   
@@ -163,7 +177,7 @@ void setup() {
     NULL,      
     1,          
     &TaskUserTests,   
-    1);        
+    0);        
 
   xTaskCreatePinnedToCore(
     shutDown,   
@@ -171,8 +185,8 @@ void setup() {
     10000,     
     NULL,      
     1,          
-    &TaskIMU,   
-    1);        
+    &TaskShutdown,   
+    0);        
 
   //Core 1 Tasks
   xTaskCreatePinnedToCore(

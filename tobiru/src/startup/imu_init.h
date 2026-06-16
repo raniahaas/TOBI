@@ -9,4 +9,4 @@
 
 extern Adafruit_LSM6DSO32 dso32;
 
-bool initIMU();
+void initIMU();

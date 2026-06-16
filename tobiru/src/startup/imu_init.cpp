@@ -1,5 +1,6 @@
 /**
-06/02/2026 - RH - 
+06/02/2026 - RH - IMU set up data
+06/16/2026 - RH - Changed function type and fixed case statements
 */
 
 //Source: https://cdn-learn.adafruit.com/downloads/pdf/lsm6dsox-and-ism330dhc-6-dof-imu.pdf 
@@ -10,7 +11,7 @@
 Adafruit_LSM6DSO32 dso32;
 
 //Ensure serial.begin is already called before this function
-bool initIMU() {
+void initIMU() {
     //Checking for continuity, setting ranges, etc
     //Add these checks later to WiFi Server so user can see without Serial Monitor
 
@@ -121,27 +122,35 @@ bool initIMU() {
             break;
         case LSM6DS_RATE_12_5_HZ:
             Serial.println("12.5 Hz");
+            break;
         case LSM6DS_RATE_26_HZ:
             Serial.println("26 Hz");
+            break;
         case LSM6DS_RATE_52_HZ:
             Serial.println("52 Hz");
+            break;
         case LSM6DS_RATE_104_HZ:
             Serial.println("104 Hz");
+            break;
         case LSM6DS_RATE_208_HZ:
             Serial.println("208 Hz");
+            break;
         case LSM6DS_RATE_416_HZ:
             Serial.println("416 Hz");
+            break;
         case LSM6DS_RATE_833_HZ:
             Serial.println("833 Hz");
+            break;
         case LSM6DS_RATE_1_66K_HZ:
             Serial.println("1.66 KHz");
+            break;
         case LSM6DS_RATE_3_33K_HZ:
             Serial.println("3.33 KHz");
+            break;
         case LSM6DS_RATE_6_66K_HZ:
             Serial.println("6.66 KHz");
             break;
     }
-    return 0;
 }
 
 // void IMUPrints() {
