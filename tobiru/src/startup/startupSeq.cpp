@@ -1,3 +1,7 @@
+/**
+06/16/2026 - RH - Moved code to be independent in main
+*/
+
 #include "startupSeq.h"
 #include "imu_init.h"
 #include <SimpleBatteryMonitor.h>
@@ -43,6 +47,8 @@ void runStartupSequence() {
   Serial.println("Starting device. Commencing Start up sequence.");
   initIMU();
   Serial.println("IMU in check, all systems running. Continuing boot process...");
+
+  Serial.println("Boot process complete! Starting in idle, preparing for launch.");
   
 
 }
