@@ -21,8 +21,7 @@
 // Adafruit_LSM6DSO32 dso32;
 // MS5611 baro(0x77);
 
-//Battery
-SimpleBatteryMonitor battery;
+
 
 
 //Tasks
@@ -125,7 +124,7 @@ void userTests(void *pvParameters){
 
 void setup() {
   Serial.begin(115200); //default baud rate
-  delay(3000);
+  delay(3000); //Longer delay time here required to just see the Serial Monitor information
 
   Wire.begin(5,6);
 
