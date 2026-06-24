@@ -8121,7 +8121,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Library:ESP32S3"
+		(property "Footprint" "Seeed_Studio_XIAO_Series:XIAO-ESP32-S3-DIP"
 			(at 125.73 38.1 0)
 			(effects
 				(font
