@@ -174,13 +174,13 @@
 		(descr "Resistor SMD 01005 (0402 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: http://www.vishay.com/docs/20056/crcw01005e3.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R5"
-			(at 0 -1 90)
+			(at 0 -0.549199 90)
 			(layer "F.SilkS")
 			(uuid "311753c1-748f-4e4d-9bd9-1e144b74e474")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 			)
 		)
@@ -308,14 +308,14 @@
 		(at 187.950001 114.010201)
 		(tags "T2N7002BK_LM ")
 		(property "Reference" "Q1"
-			(at 5.760001 0.1298 0)
+			(at 0.049999 -2.610201 0)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "90987ed4-a2b0-44b2-b0ce-13266a970178")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.7 0.7)
+					(thickness 0.0875)
 				)
 			)
 		)
@@ -748,13 +748,13 @@
 		(descr "Resistor SMD 01005 (0402 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: http://www.vishay.com/docs/20056/crcw01005e3.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R3"
-			(at 0 -1.5 0)
+			(at 0 0.6 0)
 			(layer "F.SilkS")
 			(uuid "bd0b98cf-46d7-47af-8ca2-2a3585269bef")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 			)
 		)
@@ -880,15 +880,15 @@
 		(layer "F.Cu")
 		(uuid "2351c537-9756-4036-9d92-01f6ff9e53dd")
 		(at 183.88 100.88 180)
-		(property "Reference" "U1"
-			(at 0.025 -10.35 180)
+		(property "Reference" "XIAO ESP32-S3"
+			(at 0.28 0.08 0)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "01f1c1f8-50ed-4693-9e9d-22eb755b57cf")
 			(effects
 				(font
-					(size 0.635 0.635)
-					(thickness 0.1016)
+					(size 1 1)
+					(thickness 0.125)
 				)
 			)
 		)
@@ -1510,14 +1510,14 @@
 		(at 184.82 120.8)
 		(descr "Terminal Block Phoenix MPT-0,5-2-2.54, 2 pins, pitch 2.54mm, size 5.54x6.2mm, drill diameter 1.1mm, pad diameter 2.2mm, http://www.mouser.com/ds/2/324/ItemDetail_1725656-920552.pdf, script-generated using https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/tree/master/scripts/TerminalBlock_Phoenix")
 		(tags "THT Terminal Block Phoenix MPT-0,5-2-2.54 pitch 2.54mm size 5.54x6.2mm drill 1.1mm pad 2.2mm")
-		(property "Reference" "J3"
+		(property "Reference" "Batt."
 			(at 1.27 -4.22 0)
 			(layer "F.SilkS")
 			(uuid "d58fab41-ee9a-4b15-b60e-c7855d03b51e")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.8 0.8)
+					(thickness 0.1)
 				)
 			)
 		)
@@ -1870,13 +1870,13 @@
 		(descr "Resistor SMD 01005 (0402 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: http://www.vishay.com/docs/20056/crcw01005e3.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R1"
-			(at 0 -1 0)
+			(at 0 0.6 0)
 			(layer "F.SilkS")
 			(uuid "d4a8fa63-2ada-4367-9916-d128c4258153")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 			)
 		)
@@ -2005,13 +2005,13 @@
 		(descr "Resistor SMD 01005 (0402 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: http://www.vishay.com/docs/20056/crcw01005e3.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R9"
-			(at 0 -1 0)
+			(at 0 0.6 0)
 			(layer "F.SilkS")
 			(uuid "7d8a62f8-fd43-4d1b-b0a5-b023d342e6c5")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 			)
 		)
@@ -2140,13 +2140,13 @@
 		(descr "Resistor SMD 01005 (0402 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: http://www.vishay.com/docs/20056/crcw01005e3.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R2"
-			(at 0 -1 0)
+			(at 0.025 0.9 0)
 			(layer "F.SilkS")
 			(uuid "0ee8961a-8e12-4ca7-a4d9-14a3d7135991")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 			)
 		)
@@ -2274,14 +2274,14 @@
 		(at 204.82 84.9 180)
 		(descr "Terminal Block Phoenix MPT-0,5-4-2.54, 4 pins, pitch 2.54mm, size 10.6x6.2mm, drill diameter 1.1mm, pad diameter 2.2mm, http://www.mouser.com/ds/2/324/ItemDetail_1725672-916605.pdf, script-generated using https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/tree/master/scripts/TerminalBlock_Phoenix")
 		(tags "THT Terminal Block Phoenix MPT-0,5-4-2.54 pitch 2.54mm size 10.6x6.2mm drill 1.1mm pad 2.2mm")
-		(property "Reference" "J2"
-			(at 3.81 -4.22 0)
+		(property "Reference" "Batt."
+			(at 3.42 4.5 0)
 			(layer "F.SilkS")
 			(uuid "d479bd12-44e3-4d0a-abcb-aefa3b2946f2")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.8 0.8)
+					(thickness 0.1)
 				)
 			)
 		)
@@ -2687,14 +2687,14 @@
 		(at 189.0108 86.508599 180)
 		(tags "T2N7002BK_LM ")
 		(property "Reference" "Q2"
-			(at -3.864999 0.1298 180)
+			(at 0.0108 2.908599 0)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "75b04b0d-0569-42bf-9e67-03b7c8300b9a")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.8 0.8)
+					(thickness 0.1)
 				)
 			)
 		)
@@ -3127,13 +3127,13 @@
 		(descr "Resistor SMD 01005 (0402 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: http://www.vishay.com/docs/20056/crcw01005e3.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R6"
-			(at 0 -1 0)
+			(at 0.025 -0.6 0)
 			(layer "F.SilkS")
 			(uuid "e66fe5c1-8018-4fbd-9730-485b6c20f630")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 			)
 		)
@@ -3261,14 +3261,14 @@
 		(at 201.019999 120.0602)
 		(tags "T2N7002BK_LM ")
 		(property "Reference" "Q3"
-			(at -4.019999 -1.5602 0)
+			(at -0.019999 -2.5602 0)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "6848ae84-1d77-4deb-a6e8-4a3a8a468cf1")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.7 0.7)
+					(thickness 0.0875)
 				)
 			)
 		)
@@ -3700,14 +3700,14 @@
 		(at 181 84)
 		(descr "JST PH series connector, B2B-PH-K (http://www.jst-mfg.com/product/pdf/eng/ePH.pdf), generated with kicad-footprint-generator")
 		(tags "connector JST PH vertical")
-		(property "Reference" "J1"
-			(at 1 -2.9 0)
+		(property "Reference" "Batt."
+			(at 1 4.2 0)
 			(layer "F.SilkS")
 			(uuid "eb7641e6-573f-4e11-bfce-39f93f45b458")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.8 0.8)
+					(thickness 0.1)
 				)
 			)
 		)
@@ -4068,13 +4068,13 @@
 		(descr "Resistor SMD 01005 (0402 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: http://www.vishay.com/docs/20056/crcw01005e3.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R4"
-			(at 0 -1 0)
+			(at 0 0.6 0)
 			(layer "F.SilkS")
 			(uuid "dc947093-21bc-49d4-9e34-21f7450c8aff")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 			)
 		)
@@ -4203,13 +4203,13 @@
 		(descr "Resistor SMD 01005 (0402 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: http://www.vishay.com/docs/20056/crcw01005e3.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R7"
-			(at 0 -1 90)
+			(at -1 -0.025 270)
 			(layer "F.SilkS")
 			(uuid "702927a7-524c-4fba-8386-4d6767ba71b4")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 			)
 		)
@@ -4338,13 +4338,13 @@
 		(descr "Resistor SMD 01005 (0402 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: http://www.vishay.com/docs/20056/crcw01005e3.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R8"
-			(at 0 -1 90)
+			(at -0.075 -0.8 90)
 			(layer "F.SilkS")
 			(uuid "8fadf108-1d56-4f3b-a69f-d38a6e4c2ac2")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 			)
 		)
@@ -4478,8 +4478,8 @@
 			(uuid "5847c13b-a0de-4e47-bb86-a14f26a03cf4")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 				(justify mirror)
 			)
@@ -4613,13 +4613,13 @@
 		(descr "Resistor SMD 01005 (0402 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: http://www.vishay.com/docs/20056/crcw01005e3.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R11"
-			(at 0 1 0)
+			(at 0 0.7 0)
 			(layer "B.SilkS")
 			(uuid "37c30848-69a2-421b-805c-3e41091723b7")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.4 0.4)
+					(thickness 0.05)
 				)
 				(justify mirror)
 			)
@@ -4753,13 +4753,13 @@
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C4"
-			(at 0 1.43 90)
+			(at 2.425 0.1 90)
 			(layer "B.SilkS")
 			(uuid "f89b81bb-6d07-4d7f-abe4-8f105338c518")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.8 0.8)
+					(thickness 0.1)
 				)
 				(justify mirror)
 			)
@@ -4899,13 +4899,13 @@
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C3"
-			(at -3.665 0.19 0)
+			(at 0.025 1.7 0)
 			(layer "B.SilkS")
 			(uuid "44b86583-1cad-4a1a-a6a0-b2050da2ce30")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.8 0.8)
+					(thickness 0.1)
 				)
 				(justify mirror)
 			)
@@ -5045,13 +5045,13 @@
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C5"
-			(at 0 2.145 0)
+			(at -0.075 -1.5 0)
 			(layer "B.SilkS")
 			(uuid "fb98445b-933b-4f77-8431-9f09c3b5db44")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.8 0.8)
+					(thickness 0.1)
 				)
 				(justify mirror)
 			)
@@ -5188,8 +5188,8 @@
 		(layer "B.Cu")
 		(uuid "c6d1076e-a358-4030-bdcd-39ed75a33a77")
 		(at 204.62 101.84 90)
-		(property "Reference" "U2"
-			(at -5.08 -1.27 270)
+		(property "Reference" "LSM6DSO32"
+			(at 8.04 0.78 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "756524a0-66fa-4224-bba7-2246cbcd5364")
@@ -5314,7 +5314,7 @@
 			)
 		)
 		(fp_text user "DOG"
-			(at 3.25 3.5 180)
+			(at 2.04 6.58 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "4d780ab3-ff4e-4cd6-9ba2-6084388132d0")
@@ -5366,7 +5366,7 @@
 			)
 		)
 		(fp_text user "SDX"
-			(at -2 3.5 180)
+			(at -2.96 6.48 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "66c87328-b8ca-4b07-8edc-b111948985dd")
@@ -5392,7 +5392,7 @@
 			)
 		)
 		(fp_text user "SCX"
-			(at -4.5 3.5 180)
+			(at -5.66 6.58 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "7bfb39f3-6ad3-44df-b3eb-04e50a6e7c11")
@@ -5405,7 +5405,7 @@
 			)
 		)
 		(fp_text user "CS"
-			(at 0.75 4.5 180)
+			(at -0.66 6.58 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "b80ab7b6-6d3f-447a-a41d-afb66d7db88e")
@@ -5457,7 +5457,7 @@
 			)
 		)
 		(fp_text user "ND"
-			(at 5.75 4.5 180)
+			(at 4.54 6.48 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "fc256adb-a952-4fdf-8053-08c4ae4a1c20")
@@ -5676,14 +5676,14 @@
 		(at 190.125 101.425 -90)
 		(descr "LGA-8")
 		(tags "lga land grid array")
-		(property "Reference" "U4"
-			(at -0.715 3.65 90)
+		(property "Reference" "IMU"
+			(at -2.525 0.025 180)
 			(layer "B.SilkS")
 			(uuid "c8f3cb81-479a-4e18-91dc-85de97e922db")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 0.8 0.8)
+					(thickness 0.1)
 				)
 				(justify mirror)
 			)
@@ -6034,6 +6034,71 @@
 		(fill no)
 		(layer "Edge.Cuts")
 		(uuid "ef724435-8de3-457b-85d1-1dbc4d5bce71")
+	)
+	(gr_text "-  +"
+		(at 202.2 89.5 0)
+		(layer "F.SilkS")
+		(uuid "0e38f0e5-0179-4331-8e8b-f38cd7a0b038")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.16)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "+ -"
+		(at 184.3 125.5 180)
+		(layer "F.SilkS")
+		(uuid "1afb09f4-8d0f-4eb3-91f9-73b209926e6e")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.16)
+				(bold yes)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(gr_text "This Side Toward Space"
+		(at 199.8 108.9 90)
+		(layer "F.SilkS")
+		(uuid "1c85765b-fcd8-4c01-867a-9d51a2706eab")
+		(effects
+			(font
+				(size 0.8128 0.8128)
+				(thickness 0.1524)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "TOBI V1"
+		(at 201.5 103 90)
+		(layer "F.SilkS")
+		(uuid "4dc2c6f8-3e48-4ff0-99ce-0c9f0cfc9264")
+		(effects
+			(font
+				(size 0.8128 0.8128)
+				(thickness 0.1524)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "UCRC R. HAAS"
+		(at 202.9 105.2 90)
+		(layer "F.SilkS")
+		(uuid "658e7fd5-39ef-4580-b1e1-9e763a006a2e")
+		(effects
+			(font
+				(size 0.8128 0.8128)
+				(thickness 0.1524)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
 	)
 	(segment
 		(start 186.45 97.5)
