@@ -5,6 +5,7 @@
 06/14/2026 - RH - Battery Voltage display for serial log
 06/16/2026 - RH - Testing for IMU; without battery testing which will need to be done independently 
                 - Moved Startup function to separate file; tested battery with computer not LiPO
+06/30/2026 - RH - Added WiFi startup connection as well as added more notes
 */
 
 #include <Arduino.h>
@@ -12,6 +13,7 @@
 #include <MS5611.h>
 #include "startup/startupSeq.h"
 #include <SimpleBatteryMonitor.h>
+#include <wifiSetup.h>
 
 // Note that the GPIO number is offset by one so D2 is actually GPIO3 instead of GPIO2
 
@@ -38,12 +40,16 @@ const int led2 = 5; //possibly may need to change
 
 void imuWrite(void *pvParameters)  {
   for(;;) {
+    //read the DSO and write into the accelxyz plots in wifi
+    //as well as CSV
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
 
 void readBarometer(void *pvParameters){
   for(;;) {
+    //read the barometer data from DSO and write into barometer in wifi
+    //& CSV
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
@@ -62,6 +68,7 @@ void fileLogging(void *pvParameters){
 
 void shutDown(void *pvParameters){
   for(;;) {
+    //Save CSV data and signal landing screen on wifi
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
@@ -78,7 +85,11 @@ void setup() {
 
   Wire.begin(5,6);
 
+  //Ensure flight status is correct at each status
+  flightStatus = "startup";
+
   runStartupSequence();
+  startWifi();
  
   delay(2000);
   
@@ -155,6 +166,6 @@ void setup() {
 
 
 void loop() {
-  vTaskDelete(NULL);
+  WiFiInterface();
 }
 
