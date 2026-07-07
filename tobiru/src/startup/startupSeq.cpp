@@ -1,14 +1,13 @@
 /**
 06/16/2026 - RH - Moved code to be independent in main
+07/06/2026 - RH - Edits for incoorperating global variables
 */
 
 #include "startupSeq.h"
 #include "imu_init.h"
 #include <SimpleBatteryMonitor.h>
 #include <Arduino.h>
-
-//Battery
-SimpleBatteryMonitor battery;
+#include "../globals.h"
 
 void runStartupSequence() {
   /*Things to check on startup:

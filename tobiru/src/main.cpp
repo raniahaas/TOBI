@@ -1,11 +1,12 @@
 /**
 05/22/2026 - RH - Basework for multithreading integration
-06/02/2026 - RH - Fixes to the RTOS declarations 
+06/02/2026 - RH - Fixes to the RTOS declarations
 06/14/2026 - RH - Added Startup sequence for IMU
 06/14/2026 - RH - Battery Voltage display for serial log
-06/16/2026 - RH - Testing for IMU; without battery testing which will need to be done independently 
-                - Moved Startup function to separate file; tested battery with computer not LiPO
-06/30/2026 - RH - Added WiFi startup connection as well as added more notes
+06/16/2026 - RH - Testing for IMU; without battery testing independently
+                - Moved Startup function to separate file
+06/30/2026 - RH - Wired flightStatus transitions for WiFi dashboard
+07/06/2026 - RH - Edits for incoorperating global variables
 */
 
 #include <Arduino.h>
@@ -13,20 +14,11 @@
 #include <MS5611.h>
 #include "startup/startupSeq.h"
 #include <SimpleBatteryMonitor.h>
-#include <wifiSetup.h>
-
-// Note that the GPIO number is offset by one so D2 is actually GPIO3 instead of GPIO2
-
-// #define LED1_PIN 3 // 2 + 1
-// #define LED2_PIN 5 // 4 + 1
-
-//Sensors
-// Adafruit_LSM6DSO32 dso32;
-// MS5611 baro(0x77);
+#include "globals.h"
+#include "wifiSetup.h"
 
 
 //Tasks
-TaskHandle_t TaskStart;
 TaskHandle_t TaskFileLogging;
 TaskHandle_t TaskEventLogging;
 TaskHandle_t TaskUserTests;
@@ -35,67 +27,141 @@ TaskHandle_t TaskIMU;
 TaskHandle_t TaskBaro;
 
 const int led1 = 3;
-const int led2 = 5; //possibly may need to change
+const int led2 = 5;
 
+//Landed state variables
+static float         _maxAltitudeSeen    = 0;
+static float         _launchAltitude     = 0;
+static bool          _launched           = false;
+static bool          _apogeeReached      = false;
+static unsigned long _landedConfirmStart = 0;
 
-void imuWrite(void *pvParameters)  {
-  for(;;) {
-    //read the DSO and write into the accelxyz plots in wifi
-    //as well as CSV
+//IMU writing
+void imuWrite(void *pvParameters) {
+  for (;;) {
+    sensors_event_t accel, gyro, temp;
+    dso32.getEvent(&accel, &gyro, &temp);
+
+    //Write into globals to modify and grab
+    g_accelX = accel.acceleration.x;
+    g_accelY = accel.acceleration.y;
+    g_accelZ = accel.acceleration.z;
+
+    g_gyroX  = gyro.gyro.x;
+    g_gyroY  = gyro.gyro.y;
+    g_gyroZ  = gyro.gyro.z;
+
+    vTaskDelay(pdMS_TO_TICKS(100)); //10Hz
+  }
+}
+
+//Barometer
+void readBarometer(void *pvParameters) {
+  for (;;) {
+    //Once surface mounts are applied test
+    // g_barometer = baro.getPressure();
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+}
+
+//Event logging
+void writeEvents(void *pvParameters) {
+  for (;;) {
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
 
-void readBarometer(void *pvParameters){
-  for(;;) {
-    //read the barometer data from DSO and write into barometer in wifi
-    //& CSV
-    vTaskDelay(pdMS_TO_TICKS(1000));
+//File logging
+void fileLogging(void *pvParameters) {
+  for (;;) {
+    // log into csv file
+    //csvReady = true; for download
+    vTaskDelay(pdMS_TO_TICKS(100));
   }
 }
 
-void writeEvents(void *pvParameters){
-  for(;;) {
-    vTaskDelay(pdMS_TO_TICKS(1000));
+//Landing detection and shutdown
+//Landing detection will be separate but required for shutdown as well
+void shutDown(void *pvParameters) {
+  for (;;) {
+
+    if (flightStatus == "armed") {
+
+      float az  = g_accelZ;
+      float alt = g_barometer; //replace with real altitude from baro
+
+      //Detect launch when Z accel spike above ~1.5G
+      if (!_launched && az > 15.0f) {
+        _launched       = true;
+        _launchAltitude = alt;
+        Serial.println("LAUNCH DETECTED");
+      }
+
+      //Track altitude for apogee
+      if (_launched && alt > _maxAltitudeSeen) {
+        _maxAltitudeSeen = alt;
+      }
+
+      //Detect apogee when device droppes 50m below the peak altitude
+      if (_launched && !_apogeeReached && (_maxAltitudeSeen - alt) > 50.0f) {
+        _apogeeReached = true;
+        g_apogee       = _maxAltitudeSeen;
+        Serial.print("APOGEE DETECTED: ");
+        Serial.println(g_apogee);
+      }
+
+      //Detect landing when near ground state and stable for 3+s 
+      if (_apogeeReached) {
+        bool nearGround = (alt < _launchAltitude + 20.0f);
+        bool stable     = (abs(az - 9.81f) < 1.0f);
+
+        if (nearGround && stable) {
+          if (_landedConfirmStart == 0) {
+            _landedConfirmStart = millis();
+          } else if (millis() - _landedConfirmStart > 3000) {
+            //need to add data here stil
+            g_drogue       = 0;
+            g_main         = 0;
+            g_maxVel       = 0;
+            g_avgVel       = 0;
+            g_timeToApogee = 0;
+            g_timeToMain   = 0;
+
+            flightStatus = "landed";
+            Serial.println("LANDED");
+          }
+        } else {
+          _landedConfirmStart = 0;
+        }
+      }
+    }
+
+    vTaskDelay(pdMS_TO_TICKS(100));
   }
 }
 
-void fileLogging(void *pvParameters){
-  for(;;) {
-    vTaskDelay(pdMS_TO_TICKS(1000));
-  }
-}
-
-void shutDown(void *pvParameters){
-  for(;;) {
-    //Save CSV data and signal landing screen on wifi
-    vTaskDelay(pdMS_TO_TICKS(1000));
-  }
-}
-
-void userTests(void *pvParameters){
-  for(;;) {
+//Test the device before flight
+void userTests(void *pvParameters) {
+  for (;;) {
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
 
 void setup() {
-  Serial.begin(115200); //default baud rate
-  delay(3000); //Longer delay time here required to just see the Serial Monitor information
+  Serial.begin(115200);
+  delay(3000);
 
-  Wire.begin(5,6);
+  Wire.begin(5, 6);
 
-  //Ensure flight status is correct at each status
+  //Intialise state
   flightStatus = "startup";
 
   runStartupSequence();
   startWifi();
- 
-  delay(2000);
-  
-  
 
-  /*
+  flightStatus = "ready";
+
+/*
   Core 0:
     Used for all event logging
       File logging
@@ -108,64 +174,17 @@ void setup() {
   */
 
   //Core 0 Tasks                 
-  xTaskCreatePinnedToCore(
-    writeEvents,   
-    "eventLogging",   
-    4096,     
-    NULL,      
-    2,          
-    &TaskEventLogging,   
-    0);        
-
-  xTaskCreatePinnedToCore(
-    fileLogging,   
-    "fileLogging",   
-    4096,     
-    NULL,      
-    1,          
-    &TaskFileLogging,   
-    0);        
-
-  xTaskCreatePinnedToCore(
-    userTests,   
-    "TestMode",   
-    4096,     
-    NULL,      
-    1,          
-    &TaskUserTests,   
-    0);        
-
-  xTaskCreatePinnedToCore(
-    shutDown,   
-    "PoweringOff",   
-    4096,     
-    NULL,      
-    1,          
-    &TaskShutdown,   
-    0);        
-
+  xTaskCreatePinnedToCore(writeEvents,   "eventLogging", 4096, NULL, 2, &TaskEventLogging, 0);
+  xTaskCreatePinnedToCore(fileLogging,   "fileLogging",  4096, NULL, 1, &TaskFileLogging,  0);
+  xTaskCreatePinnedToCore(userTests,     "TestMode",     4096, NULL, 1, &TaskUserTests,    0);
+  xTaskCreatePinnedToCore(shutDown,      "PoweringOff",  4096, NULL, 1, &TaskShutdown,     0);
+ 
   //Core 1 Tasks
-  xTaskCreatePinnedToCore(
-    imuWrite,   
-    "imu",   
-    4096,     
-    NULL,      
-    1,          
-    &TaskIMU,   
-    1);        
+  xTaskCreatePinnedToCore(imuWrite,      "imu",          4096, NULL, 2, &TaskIMU,          1);
+  xTaskCreatePinnedToCore(readBarometer, "barometer",    4096, NULL, 1, &TaskBaro,         1);   
 
-    xTaskCreatePinnedToCore(
-    readBarometer,   
-    "barometer",   
-    4096,     
-    NULL,      
-    1,          
-    &TaskBaro,   
-    1);        
 }
-
 
 void loop() {
-  WiFiInterface();
+  WiFiInterface(); 
 }
-

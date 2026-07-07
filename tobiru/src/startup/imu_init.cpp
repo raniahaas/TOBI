@@ -1,14 +1,14 @@
 /**
 06/02/2026 - RH - IMU set up data
 06/16/2026 - RH - Changed function type and fixed case statements
+07/06/2026 - RH - Edits for incoorperating global variables
 */
 
 //Source: https://cdn-learn.adafruit.com/downloads/pdf/lsm6dsox-and-ism330dhc-6-dof-imu.pdf 
 
 #include "imu_init.h"
+#include "../globals.h"
 #include <Arduino.h>
-
-Adafruit_LSM6DSO32 dso32;
 
 //Ensure serial.begin is already called before this function
 void initIMU() {

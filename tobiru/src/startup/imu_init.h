@@ -1,12 +1,9 @@
 /**
-06/02/2026 - RH - 
+06/02/2026 - RH - Created setup document
+07/06/2026 - RH - Edits for incoorperating global variables
 */
 
 #pragma once
-#include <Adafruit_LSM6DSO32.h>
 //doing pragma once here so it truly only does run once
-//could cause issues later down the line if constantly checking
-
-extern Adafruit_LSM6DSO32 dso32;
 
 void initIMU();

@@ -1,31 +1,23 @@
 /**
 06/16/2026 - RH - Moved code to be independent in main
 06/30/2026 - RH - Started integration of CodePen HTML setup
+06/30/2026 - RH - Fixed JSON shape, string quoting, CSS dedup, function scope
+07/06/2026 - RH - Edits for incoorperating global variables as well as more HTML edits
 */
 #pragma once
 #include <WiFi.h>
 #include <WiFiAP.h>
 #include <LittleFS.h>
 #include "FS.h"
+#include "globals.h"
 
 #include <SimpleBatteryMonitor.h>
 #include <Adafruit_LSM6DSO32.h>
-
-extern SimpleBatteryMonitor battery;
-extern Adafruit_LSM6DSO32 dso32;
 
 const char *ssid     = "TOBI";
 const char *password = "password";
 
 WiFiServer server(80);
-
-String flightStatus = "startup";
-bool   csvReady    = false;
-
-//Flight summary variables
-float g_apogee = 0, g_drogue = 0, g_main = 0;
-float g_maxVel = 0, g_avgVel = 0;
-float g_timeToApogee = 0, g_timeToMain = 0;
 
 //Full HTML code
 const char homePage[] PROGMEM = R"=====(
@@ -562,33 +554,28 @@ void WiFiInterface(){
 
                 //Live data from JSON
                 if(requestLine.startsWith("GET /data")){
-                    sensors_event_t accel, gyro, temp;
-                    dso32.getEvent(&accel, &gyro, &temp);
-                    float voltage = battery.readVoltage();
-
                     client.println("HTTP/1.1 200 OK");
                     client.println("Content-Type: application/json");
                     client.println("Connection: close");
                     client.println();
 
                     client.print("{");
-                    client.print("\"state\":\"");        client.print(flightStatus);           client.print("\",");
-                    client.print("\"batteryVoltage\":"); client.print(voltage, 2);             client.print(",");
-                    client.print("\"accelX\":");         client.print(accel.acceleration.x,3); client.print(",");
-                    client.print("\"accelY\":");         client.print(accel.acceleration.y,3); client.print(",");
-                    client.print("\"accelZ\":");         client.print(accel.acceleration.z,3); client.print(",");
-                    client.print("\"gyroX\":");          client.print(gyro.gyro.x,3);          client.print(",");
-                    client.print("\"gyroY\":");          client.print(gyro.gyro.y,3);          client.print(",");
-                    client.print("\"gyroZ\":");          client.print(gyro.gyro.z,3);          client.print(",");
-                    client.print("\"temp\":");           client.print(temp.temperature,1);     client.print(",");
+                    client.print("\"state\":\"");        client.print(flightStatus);             client.print("\",");
+                    client.print("\"accelX\":");         client.print(g_accelX,3);              client.print(",");
+                    client.print("\"accelY\":");         client.print(g_accelY,3);              client.print(",");
+                    client.print("\"accelZ\":");         client.print(g_accelZ,3);              client.print(",");
+                    client.print("\"gyroX\":");          client.print(g_gyroX,3);               client.print(",");
+                    client.print("\"gyroY\":");          client.print(g_gyroY,3);               client.print(",");
+                    client.print("\"gyroZ\":");          client.print(g_gyroZ,3);               client.print(",");
+                    client.print("\"barometer\":");      client.print(g_barometer,2);           client.print(",");
                     client.print("\"csvReady\":");       client.print(csvReady?"true":"false"); client.print(",");
                     client.print("\"flight\":{");
-                    client.print("\"apogee\":");         client.print(g_apogee,0);       client.print(",");
-                    client.print("\"drogue\":");         client.print(g_drogue,0);       client.print(",");
-                    client.print("\"main\":");           client.print(g_main,0);         client.print(",");
-                    client.print("\"maxVel\":");         client.print(g_maxVel,0);       client.print(",");
-                    client.print("\"avgVel\":");         client.print(g_avgVel,0);       client.print(",");
-                    client.print("\"timeToApogee\":"); client.print(g_timeToApogee,1); client.print(",");
+                    client.print("\"apogee\":");         client.print(g_apogee,0);              client.print(",");
+                    client.print("\"drogue\":");         client.print(g_drogue,0);              client.print(",");
+                    client.print("\"main\":");           client.print(g_main,0);                client.print(",");
+                    client.print("\"maxVel\":");         client.print(g_maxVel,0);              client.print(",");
+                    client.print("\"avgVel\":");         client.print(g_avgVel,0);              client.print(",");
+                    client.print("\"timeToApogee\":"); client.print(g_timeToApogee,1);          client.print(",");
                     client.print("\"timeToMain\":");   client.print(g_timeToMain,1);
                     client.print("}}");
                     break;
