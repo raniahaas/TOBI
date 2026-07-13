@@ -10,6 +10,7 @@
 #include <LittleFS.h>
 #include "FS.h"
 #include "globals.h"
+#include "fileLogging.h"
 
 #include <SimpleBatteryMonitor.h>
 #include <Adafruit_LSM6DSO32.h>
@@ -584,6 +585,7 @@ void WiFiInterface(){
                 //Disarm switch
                 if(requestLine.startsWith("GET /arm")){
                     flightStatus = "armed";
+                    loggerArmed();
                     client.println("HTTP/1.1 200 OK"); client.println("Connection: close"); client.println();
                     client.println("armed"); break;
                 }
