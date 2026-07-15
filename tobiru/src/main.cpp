@@ -7,6 +7,7 @@
                 - Moved Startup function to separate file
 06/30/2026 - RH - Wired flightStatus transitions for WiFi dashboard
 07/06/2026 - RH - Edits for incoorperating global variables
+07/14/2026 - RH - Modifications to 'shutdown' for unit testing
 */
 
 #include <Arduino.h>
@@ -16,6 +17,7 @@
 #include <SimpleBatteryMonitor.h>
 #include "globals.h"
 #include "wifiSetup.h"
+#include "flightState.h"
 
 
 //Tasks
@@ -83,59 +85,30 @@ void fileLogging(void *pvParameters) {
 //Landing detection and shutdown
 //Landing detection will be separate but required for shutdown as well
 void shutDown(void *pvParameters) {
+  static FlightState state;
   for (;;) {
-
     if (flightStatus == "armed") {
+      FlightInputs in{ g_accelZ, g_barometer, millis() };
+      bool wasLaunched = state.launched;
+      bool wasApogee   = state.apogeeReached;
+      bool wasLanded   = state.landed;
 
-      float az  = g_accelZ;
-      float alt = g_barometer; //replace with real altitude from baro
+      state = updateFlightState(state, in);
 
-      //Detect launch when Z accel spike above ~1.5G
-      if (!_launched && az > 15.0f) {
-        _launched       = true;
-        _launchAltitude = alt;
-        Serial.println("LAUNCH DETECTED");
-      }
-
-      //Track altitude for apogee
-      if (_launched && alt > _maxAltitudeSeen) {
-        _maxAltitudeSeen = alt;
-      }
-
-      //Detect apogee when device droppes 50m below the peak altitude
-      if (_launched && !_apogeeReached && (_maxAltitudeSeen - alt) > 50.0f) {
-        _apogeeReached = true;
-        g_apogee       = _maxAltitudeSeen;
+      // side effects (logging, globals, Serial) only happen on transitions
+      if (state.launched && !wasLaunched) Serial.println("LAUNCH DETECTED");
+      if (state.apogeeReached && !wasApogee) {
+        g_apogee = state.apogee;
         Serial.print("APOGEE DETECTED: ");
         Serial.println(g_apogee);
       }
-
-      //Detect landing when near ground state and stable for 3+s 
-      if (_apogeeReached) {
-        bool nearGround = (alt < _launchAltitude + 20.0f);
-        bool stable     = (abs(az - 9.81f) < 1.0f);
-
-        if (nearGround && stable) {
-          if (_landedConfirmStart == 0) {
-            _landedConfirmStart = millis();
-          } else if (millis() - _landedConfirmStart > 3000) {
-            //need to add data here stil
-            g_drogue       = 0;
-            g_main         = 0;
-            g_maxVel       = 0;
-            g_avgVel       = 0;
-            g_timeToApogee = 0;
-            g_timeToMain   = 0;
-
-            flightStatus = "landed";
-            Serial.println("LANDED");
-          }
-        } else {
-          _landedConfirmStart = 0;
-        }
+      if (state.landed && !wasLanded) {
+        g_drogue = 0; g_main = 0; g_maxVel = 0; g_avgVel = 0;
+        g_timeToApogee = 0; g_timeToMain = 0;
+        flightStatus = "landed";
+        Serial.println("LANDED");
       }
     }
-
     vTaskDelay(pdMS_TO_TICKS(100));
   }
 }
