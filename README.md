@@ -1,5 +1,5 @@
 # TOBI
-Telemetry, Orientation and Barometric Instrument Flight Computer used for the University of Cincinnati's Rocketry Club's Projects.
+Telemetry, Orientation and Barometric Instrument Flight Computer used for the University of Cincinnati's Rocketry Club's Projects.\
 <img width="410" height="214" alt="TOBI_Logo" src="https://github.com/user-attachments/assets/6365c67b-6619-49ff-923c-a769e70f5e53" />
 
 # Introduction
