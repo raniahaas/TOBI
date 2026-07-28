@@ -32,10 +32,10 @@ void runStartupSequence() {
   Serial.println("Battery Voltage is currently: ");
   Serial.println(voltage);
 
-  if (voltage < 3.4) {
-      Serial.println("CRITICAL: Battery too low for safe operation!");
-      vTaskDelete(NULL);
-  }
+  // if (voltage < 3.4) {
+  //     Serial.println("CRITICAL: Battery too low for safe operation!");
+  //     vTaskDelete(NULL);
+  // }
 
   if (voltage < 3.6) {
       Serial.println("WARNING: Battery low! Re-charge battery soon. Startup continuing...");
