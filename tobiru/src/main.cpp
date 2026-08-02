@@ -16,6 +16,7 @@
 #include <SimpleBatteryMonitor.h>
 #include "globals.h"
 #include "wifiSetup.h"
+#include "fileLogging.h"
 
 
 //Tasks
@@ -25,16 +26,26 @@ TaskHandle_t TaskUserTests;
 TaskHandle_t TaskShutdown;
 TaskHandle_t TaskIMU;
 TaskHandle_t TaskBaro;
+TaskHandle_t TaskBattery;
 
 const int led1 = 3;
 const int led2 = 5;
 
+//Pyro pins for main and drouge; dont forget about offset when testing
+const int PYRO_DROUGE = 5;
+const int PYRO_MAIN = 9;
+
 //Landed state variables
-static float         _maxAltitudeSeen    = 0;
-static float         _launchAltitude     = 0;
-static bool          _launched           = false;
-static bool          _apogeeReached      = false;
-static unsigned long _landedConfirmStart = 0;
+static float         maxAltitudeSeen    = 0;
+static float         launchAltitude     = 0;
+static bool          launched           = false;
+static bool          apogeeReached      = false;
+static unsigned long landedConfirmStart = 0;
+static bool burnoutLogged = false;
+static bool drogueDeployed = false;
+static bool mainDeployed = false;
+static unsigned long landingConfirmed = 0;
+static unsigned long burnoutTime = 0;
 
 //IMU writing
 void imuWrite(void *pvParameters) {
@@ -50,6 +61,8 @@ void imuWrite(void *pvParameters) {
     g_gyroX  = gyro.gyro.x;
     g_gyroY  = gyro.gyro.y;
     g_gyroZ  = gyro.gyro.z;
+
+    logSensors();
 
     vTaskDelay(pdMS_TO_TICKS(100)); //10Hz
   }
@@ -67,7 +80,9 @@ void readBarometer(void *pvParameters) {
 //Event logging
 void writeEvents(void *pvParameters) {
   for (;;) {
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    if (flightStatus == "armed") {
+
+    }
   }
 }
 
@@ -90,57 +105,95 @@ void shutDown(void *pvParameters) {
       float az  = g_accelZ;
       float alt = g_barometer; //replace with real altitude from baro
 
-      //Detect launch when Z accel spike above ~1.5G
-      if (!_launched && az > 15.0f) {
-        _launched       = true;
-        _launchAltitude = alt;
+
+      //Detect launch when Z accel spike <1.5G
+      if (!launched && az > 15.0f) {
+        launched       = true;
+        launchAltitude = alt;
+        logLaunch();
         Serial.println("LAUNCH DETECTED");
       }
 
+      if (!launched) {
+        vTaskDelay(pdMS_TO_TICKS(50));
+        continue;
+      }
+
+      //Calculate motor burnout based on Gs dropping and at least 0.5s passing
+      if (!burnoutLogged && loggingTime() > 500) {
+        if(az < 12.0f) {
+            burnoutTime = loggingTime();
+            burnoutLogged = true;
+            logEvents("MOTOR BURNOUT", "Accelerometer", "Acceleration dropping post launch, motor burnout occuring.");
+            Serial.println("Motor burnout detected!");
+        }
+      }
+
       //Track altitude for apogee
-      if (_launched && alt > _maxAltitudeSeen) {
-        _maxAltitudeSeen = alt;
+      if (alt > maxAltitudeSeen) {
+        maxAltitudeSeen = alt;
       }
 
       //Detect apogee when device droppes 50m below the peak altitude
-      if (_launched && !_apogeeReached && (_maxAltitudeSeen - alt) > 50.0f) {
-        _apogeeReached = true;
-        g_apogee       = _maxAltitudeSeen;
+      if (launched && !apogeeReached && (maxAltitudeSeen - alt) > 50.0f) {
+        apogeeReached = true;
+        g_apogee = maxAltitudeSeen;
+        logEvents("APOGEE", "Barometer and Accelerometer", "Altitude dropping at least 50 meters below max recorded height.");
         Serial.print("APOGEE DETECTED: ");
         Serial.println(g_apogee);
       }
 
       //Detect landing when near ground state and stable for 3+s 
-      if (_apogeeReached) {
-        bool nearGround = (alt < _launchAltitude + 20.0f);
+      if (apogeeReached && !drogueDeployed) {
+        digitalWrite(PYRO_DROUGE, HIGH);
+        delay(500);
+        digitalWrite(PYRO_DROUGE, LOW);
+        drogueDeployed = true;
+        g_drogue = alt;
+        logEvents("DROGUE_DEPLOYED", "Pyro & Barometer & Accelerometer", "Drogue deployment after e-match.");
+        Serial.println("Drogue Deployed!");
+      }   
+
+      //Main deployment
+      const float MAIN_DEPLOY_ALT = launchAltitude + 150.0f;
+      if(drogueDeployed && ! mainDeployed && alt < MAIN_DEPLOY_ALT) {
+        digitalWrite(PYRO_MAIN, HIGH);
+        delay(500);
+        digitalWrite(PYRO_MAIN, LOW);
+        mainDeployed = true;
+        g_main = alt;
+        logEvents("MAIN_DEPLOY", "Pyro & barometer", "Main pyros have been fired");
+        Serial.println("MAIN DEPLOYED");
+      }
+    
+      //Landing detection
+      if(mainDeployed) {
+        bool nearGround = (alt < launchAltitude + 20.0f);
         bool stable     = (abs(az - 9.81f) < 1.0f);
 
         if (nearGround && stable) {
-          if (_landedConfirmStart == 0) {
-            _landedConfirmStart = millis();
-          } else if (millis() - _landedConfirmStart > 3000) {
-            //need to add data here stil
-            g_drogue       = 0;
-            g_main         = 0;
-            g_maxVel       = 0;
-            g_avgVel       = 0;
-            g_timeToApogee = 0;
-            g_timeToMain   = 0;
+          if (landedConfirmStart == 0) {
+            landedConfirmStart = millis();
+          } else if (millis() - landedConfirmStart > 3000) {
+
+            g_timeToApogee = apogeeReached ? (float)loggingTime() : 0;
+            g_timeToMain = mainDeployed ? (float)loggingTime() : 0;
 
             flightStatus = "landed";
             Serial.println("LANDED");
           }
         } else {
-          _landedConfirmStart = 0;
+          landedConfirmStart = 0;
         }
       }
     }
 
-    vTaskDelay(pdMS_TO_TICKS(100));
+    //20 Hz for eventes
+    vTaskDelay(pdMS_TO_TICKS(50)); 
   }
 }
 
-//Test the device before flight
+
 void userTests(void *pvParameters) {
   for (;;) {
     vTaskDelay(pdMS_TO_TICKS(1000));
@@ -153,11 +206,16 @@ void setup() {
 
   Wire.begin(5, 6);
 
+  //PYRO pins
+  pinMode(PYRO_DROUGE, OUTPUT); digitalWrite(PYRO_DROUGE, LOW);
+  pinMode(PYRO_MAIN, OUTPUT); digitalWrite(PYRO_MAIN, LOW);
+
   //Intialise state
   flightStatus = "startup";
 
   runStartupSequence();
   startWifi();
+  loggerInit();
 
   flightStatus = "ready";
 
@@ -174,7 +232,7 @@ void setup() {
   */
 
   //Core 0 Tasks                 
-  xTaskCreatePinnedToCore(writeEvents,   "eventLogging", 4096, NULL, 2, &TaskEventLogging, 0);
+  xTaskCreatePinnedToCore(writeEvents,   "eventLogging", 8192, NULL, 2, &TaskEventLogging, 0);
   xTaskCreatePinnedToCore(fileLogging,   "fileLogging",  4096, NULL, 1, &TaskFileLogging,  0);
   xTaskCreatePinnedToCore(userTests,     "TestMode",     4096, NULL, 1, &TaskUserTests,    0);
   xTaskCreatePinnedToCore(shutDown,      "PoweringOff",  4096, NULL, 1, &TaskShutdown,     0);
