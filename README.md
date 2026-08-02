@@ -31,7 +31,7 @@ tobiru/
 |       └── startupSeq.cpp # Start device and initialise accelerometer and barometer datarates; battery voltages
 |       └── startupSeq.h
 │   ├── globals.h          # Global elements
-    ├── globals.cpp
+|   ├── globals.cpp
 │   ├── main.cpp           # Task creations
 │   └── wifiSetup.h        # Web dashboard with the Wi-Fi interface
 ├── test/                  # Unity test suites
